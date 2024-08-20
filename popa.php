@@ -1,51 +1,52 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "12022008";
-$database = "my-api";
+require 'C:\\xampp\\htdocs\\api\\db_conect.php';
 
-// Создание подключения
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = Conection::create_conection('localhost', 'root', '12022008', 'api-json-real');
 
-// Проверка подключения
-if ($conn->connect_error) {
-    die("Подключение не удалось: " . $conn->connect_error);
-}
 
 header('Content-Type: application/json');
 
-// Получение данных из входящего запроса
 $input = file_get_contents('php://input');
-$data = json_decode($input, true);
 
+$data = json_decode($input, true);
+print_r($data["purchaseOrderItems"]);
 if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode(['error' => 'Неверный JSON']);
-    http_response_code(400); // Код ошибки 400 Bad Request
+    echo json_encode(['error' => 'Invalid JSON']);
+    http_response_code(400); // Error code 400 Bad Request
     exit;
 }
 
-// Подготовка SQL-запроса
-$stmt = $conn->prepare("INSERT INTO data_table (mange, product_name) VALUES (?, ?)");
+// Prepare SQL statement
+$stmt = $conn->prepare("INSERT INTO tblweavis (
+                       aktionskennzeichen, mandant, abteilung, weart, bestellnr, kundenreferenz, lieferantenname1,
+lieferantenname2,
+lstrasse,
+llaenderkennzeichen,
+lplz,
+lort,
+artikel,
+bestellmenge,
+meeinheit,
+liefermenge,
+shop) VALUES ('WEA', 'torautomation24','torautomation24','WESTD',?,?,'torautomation24',null,'Hüttenstr. 100-102','DE','50170','Kerpen',?,?,'STK',0,'api')");
 
 if ($stmt === false) {
-    echo json_encode(['error' => 'Ошибка подготовки запроса']);
-    http_response_code(500); // Внутренняя ошибка сервера
+    echo json_encode(['error' => 'Statement preparation error']);
+    http_response_code(500); // Internal server error
     exit;
 }
 
-
-foreach ($data as $position) {
-    if ($stmt->bind_param('is', $position['menge'], $position['product_name']) === true) {
-        $stmt->execute();
-        echo "done";
-    } else {
-        echo "Shit";
-    }
+foreach ($data["purchaseOrderItems"] as $item) {
+	$stmt->bind_param("sssi", $data['purchaseOrderNumber'], $data['purchaseOrderNumber'], $item['articleNumber'], $item['quantity'] );
+	$stmt->execute();
 }
 
 
-$stmt->execute();
+
+
+
+
 
 $stmt->close();
 $conn->close();
