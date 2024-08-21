@@ -8,9 +8,7 @@ $conn = Conection::create_conection('localhost', 'root', '12022008', 'api-json-r
 header('Content-Type: application/json');
 
 $input = file_get_contents('php://input');
-
 $data = json_decode($input, true);
-print_r($data["purchaseOrderItems"]);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_encode(['error' => 'Invalid JSON']);
     http_response_code(400); // Error code 400 Bad Request
@@ -38,10 +36,9 @@ if ($stmt === false) {
 }
 
 foreach ($data["purchaseOrderItems"] as $item) {
-	$stmt->bind_param("sssi", $data['purchaseOrderNumber'], $data['purchaseOrderNumber'], $item['articleNumber'], $item['quantity'] );
-	$stmt->execute();
+    $stmt->bind_param("sssi", $data['purchaseOrderNumber'], $data['purchaseOrderNumber'], $item['articleNumber'], $item['quantity']);
+    $stmt->execute();
 }
-
 
 
 

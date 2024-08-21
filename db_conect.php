@@ -24,7 +24,3 @@ class Conection
         return $conn;
     }
 }
-
-
-
-Conection::create_conection("localhost", "root", "12022008", 'api-json-real');
