@@ -23,4 +23,16 @@ class Conection
         }
         return $conn;
     }
+
+
+    public static function get_conection($username)
+    {
+        $sql = "SELECT * FROM tbuser WHERE username = :username";
+        $pdo = new PDO("mysql:host=localhost;dbname=api-json-real", 'root', '12022008');
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':username' => $username,
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -1,22 +1,19 @@
 <?php
-
+require 'auth.php';
 $config = require 'config.php';
 
-$host = $config['database']['host'];
-$validToken = $config['auth']['valid_token'];
-
-
-$validUsername = $config['auth']['username'];
-$validPassword = $config['auth']['password'];
-
-
-$username_db = $config['database']['username'];
-$password_db = $config['database']['password'];
-$database = $config['database']['database'];
+$host = $config['main_database']['host'];
+$username_db = $config['main_database']['username'];
+$password_db = $config['main_database']['password'];
+$database = $config['main_database']['database'];
 
 header('Content-Type: application/json');
 
 $headers = getallheaders();
+
+
+
+
 
 
 $token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : '';
@@ -24,10 +21,12 @@ $username = isset($headers['Username']) ? $headers['Username'] : '';
 $password = isset($headers['Password']) ? $headers['Password'] : '';
 
 // Define your valid token, username, and password
+$auth = new Auth($config);
 
 
 
-if ($token !== $validToken || $username !== $validUsername || $password !== $validPassword) {
+
+if (!$auth->check_login($token, $username, $password)) {
     echo json_encode(['error' => 'Unauthorized']);
     http_response_code(401); // Error code 401 Unauthorized
     exit;

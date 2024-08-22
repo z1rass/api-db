@@ -4,6 +4,16 @@ require 'C:\\xampp\\htdocs\\api\\db_conect.php';
 
 $conn = Conection::create_conection('localhost', 'root', '12022008', 'api-json-real');
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['action'])) {
+        echo $_REQUEST['username'];
+        exit;
+    }
+}
+
+
+
+
 
 header('Content-Type: application/json');
 
