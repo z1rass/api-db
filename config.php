@@ -1,20 +1,15 @@
 <?php
 return [
     'main_database' => [
-        'host' => 'localhost',
+        'host' => '194.172.129.245',
         'username' => 'root',
-        'password' => '12022008',
-        'database' => 'api-json-real'
-    ],
-    'auth' => [
-        'valid_token' => 'JvRnv$pbXFyc',
-        'username' => 'admin',
-        'password' => '123456'
+        'password' => 'kesystems',
+        'database' => 'desy'
     ],
     'auth_database' => [
-        'host' => 'localhost',
+        'host' => '194.172.129.245',
         'username' => 'root',
-        'password' => '12022008',
-        'database' => 'api-json-real'
+        'password' => 'kesystems',
+        'database' => 'desy'
     ]
 ];

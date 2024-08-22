@@ -1,7 +1,6 @@
 <?php
 require 'auth.php';
 $config = require 'config.php';
-
 $host = $config['main_database']['host'];
 $username_db = $config['main_database']['username'];
 $password_db = $config['main_database']['password'];
@@ -23,7 +22,7 @@ $password = isset($headers['Password']) ? $headers['Password'] : '';
 // Define your valid token, username, and password
 $auth = new Auth($config);
 
-
+var_dump($token, $username, $password);
 
 
 if (!$auth->check_login($token, $username, $password)) {
@@ -49,6 +48,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$database", $username_db, $password_db);
 } catch (PDOException $e) {
+    echo "SHIT";
     var_dump($e->errorInfo . "\n" . $e->getMessage());
     exit();
 }

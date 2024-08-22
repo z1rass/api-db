@@ -8,7 +8,7 @@ class Auth
     private $password_db;
     private $database;
     private $pdo;
-    private $sql_get = "SELECT * FROM tbuser WHERE username = :username AND password = :password AND token = :token";
+    private $sql_get = "SELECT * FROM tbluser WHERE username = :username AND curpw = PASSWORD(:password) AND token = :token";
 
     public function __construct($config)
     {
